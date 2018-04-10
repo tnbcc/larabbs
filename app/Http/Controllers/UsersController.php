@@ -9,6 +9,12 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
+	public function __construct(){
+		$this->middleware('auth',[
+		        'excpt' => ['show'],
+		]);
+	}
+	
     /*
 	 *用户展示页
 	 */
@@ -20,7 +26,11 @@ class UsersController extends Controller
 	 *个人资料编辑展示页
 	 */
 	public function edit(User $user){
+		if(\Auth::user()->can('update',$user)){
 		return view('users.edit',compact('user')); 
+		}else{
+			return redirect()->route('users.edit', $user->id)->with('danger', '无权编辑别人的信息！');
+		}
 	}
 	
 	/*

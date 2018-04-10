@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Auth;
-use App\Models\User;
 
 class UserRequest extends FormRequest
 {

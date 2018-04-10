@@ -70,3 +70,13 @@ body {
         }
     }
 }
+
+.shared-msg
+{
+    animation:shared-msg 5s;
+    animation-fill-mode: forwards;
+}
+@keyframes shared-msg{
+    from{opacity: 1;}
+    to{opacity: 0;}
+}
