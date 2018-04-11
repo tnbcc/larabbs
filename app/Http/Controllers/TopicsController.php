@@ -6,17 +6,20 @@ use App\Models\Topic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
+use App\Models\Category;
+use Auth;
 
 class TopicsController extends Controller
 {
     public function __construct()
     {
+		//未登录用户限制
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
 	public function index(Request $request,Topic $topic)
 	{
-		 $topics = $topic->withOrder($request->order)->paginate(15);
+		 $topics = $topic->withOrder($request->order)->paginate(10);
         return view('topics.index', compact('topics'));
 	}
 
@@ -26,14 +29,18 @@ class TopicsController extends Controller
     }
 
 	public function create(Topic $topic)
-	{
-		return view('topics.create_and_edit', compact('topic'));
+	{  
+		$categories = Category::all();
+		return view('topics.create_and_edit', compact('topic','categories'));
 	}
 
-	public function store(TopicRequest $request)
-	{
-		$topic = Topic::create($request->all());
-		return redirect()->route('topics.show', $topic->id)->with('message', 'Created successfully.');
+	public function store(TopicRequest $request,Topic $topic)
+	{  
+		//自动将提交过来的表单转换成数组
+		$topic->fill($request->all());
+        $topic->user_id = Auth::id();
+        $topic->save();
+		return redirect()->route('topics.show', $topic->id)->with('message', '发帖成功~');
 	}
 
 	public function edit(Topic $topic)
