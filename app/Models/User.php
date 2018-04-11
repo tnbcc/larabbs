@@ -38,4 +38,11 @@ public function sendPasswordResetNotification($token)
 {
     $this->notify(new ResetPasswordNotification($token));
 }
+ /*
+  *一个用户可能有多个主题
+  */
+ public function topics()
+    {
+        return $this->hasMany(Topic::class);
+    }
 }
