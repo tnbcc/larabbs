@@ -9,13 +9,14 @@ use App\Http\Requests\TopicRequest;
 use App\Models\Category;
 use Auth;
 use App\Handlers\ImageUploadHandler;
+use App\Services\OSS;
 
 class TopicsController extends Controller
 {
     public function __construct()
     {
 		//未登录用户限制
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show','testup']]);
     }
 
 	public function index(Request $request,Topic $topic)
@@ -41,7 +42,7 @@ class TopicsController extends Controller
 		$topic->fill($request->all());
         $topic->user_id = Auth::id();
         $topic->save();
-		return redirect()->route('topics.show', $topic->id)->with('message', '发帖成功~');
+		return redirect()->route('topics.show', $topic->id)->with('success', '发帖成功!');
 	}
 
 	public function edit(Topic $topic)
@@ -66,9 +67,9 @@ class TopicsController extends Controller
 		return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
 	}
 	
-	 public function uploadImage(Request $request, ImageUploadHandler $uploader)
+	 public function uploadImage(Request $request)
     {
-        // 初始化返回数据，默认是失败的
+		 // 初始化返回数据，默认是失败的
         $data = [
             'success'   => false,
             'msg'       => '上传失败!',
@@ -76,11 +77,15 @@ class TopicsController extends Controller
         ];
         // 判断是否有上传文件，并赋值给 $file
         if ($file = $request->upload_file) {
-            // 保存图片到本地
-            $result = $uploader->save($request->upload_file, 'topics', \Auth::id(), 1024);
-            // 图片保存成功的话
+            // 保存图片到阿里云oss
+			$pic = $file->getRealPath();
+            $extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
+			$key = \Auth::id() . '_' . time() . '_' . str_random(10) . '.' . $extension;
+            $result = OSS::upload($key,$pic);
+			$path = OSS::getUrl($key);
+			// 图片保存成功的话
             if ($result) {
-                $data['file_path'] = $result['path'];
+                $data['file_path'] = $path;
                 $data['msg']       = "上传成功!";
                 $data['success']   = true;
             }

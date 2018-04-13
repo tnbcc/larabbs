@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use App\Handlers\ImageUploadHandler;
+use App\Services\OSS;
 
 class UsersController extends Controller
 {
@@ -36,13 +37,24 @@ class UsersController extends Controller
 	/*
 	 *个人资料更新
 	 */
-	public function update(UserRequest $request,User $user,ImageUploadHandler $uploader){
+	public function update(UserRequest $request,User $user){
 		$data = $request->all();
 		//如果上传了头像
-		if($request->avatar){
-			$result = $uploader->save($request->avatar,'avatar',$user->id,362);
-			if($result){
-				$data['avatar'] = $result['path'];
+		if($file = $request->avatar){
+			$pic = $file->getRealPath();
+			//dd($pic);
+			//$result = $uploader->save($file,'avatar',$user->id,362);
+			//$data['avatar'] = $result['path'];
+			$extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
+			$key = $user->id . '_' . time() . '_' . str_random(10) . '.' . $extension;
+			    //$key = $result['filename']; 
+			      $res = OSS::upload($key,$pic);
+			if($res){
+				  $data['avatar'] = OSS::getUrl($key);
+				 
+				//$a = Storage::disk('oss')->putFile('/',$result['path']);
+				//dd($a);
+				//Storage::move($result['path'],$result['path']);
 			}
 		}
 		$user->update($data);
