@@ -30,12 +30,16 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 //资源路由
 Route::resource('users','UsersController',['only' => ['show','update','edit']]);
 
-Route::resource('topics', 'TopicsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('topics', 'TopicsController', ['only' => ['index','create', 'store', 'update', 'edit', 'destroy']]);
+Route::get('topics/{topic}/{slug?}', 'TopicsController@show')->name('topics.show');
 
 Route::resource('categories','CategoriesController',['only' => ['show']]);
 
 Route::post('upload_image', 'TopicsController@uploadImage')->name('topics.upload_image');
 Route::get('upload', 'UploadController@index')->name('index');
+
+//测试百度翻译
+Route::get('baidu/{text}','BaiduController@index');
 
 
 
