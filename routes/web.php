@@ -44,5 +44,8 @@ Route::get('baidu/{text}','BaiduController@index');
 //发表和删除话题
 Route::resource('replies', 'RepliesController', ['only' => ['store','destroy']]);
 
+//消息通知
+Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
+
 
 
