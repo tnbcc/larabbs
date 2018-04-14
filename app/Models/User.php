@@ -38,6 +38,9 @@ public function sendPasswordResetNotification($token)
 {
     $this->notify(new ResetPasswordNotification($token));
 }
+
+ 
+ 
  /*
   *一个用户可能有多个主题
   */
@@ -46,9 +49,16 @@ public function sendPasswordResetNotification($token)
         return $this->hasMany(Topic::class);
     }
 
- public function isAuthorOf($model){
-	return $this->id = $model->user_id;
+	
+public function isAuthorOf($model){
+	return $this->id == $model->user_id;
 }
 	
-	
+ /*
+  *一个用户可以拥有多个回复
+  */
+ public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }	
 }

@@ -12,7 +12,7 @@ class UserPolicy
    /*
     *只能编辑自己的个人信息
 	*/
-	public function update(User $currentUser, User $user){
+	public function update(User $currentUser,User $user){
 		return $currentUser->id === $user->id;
 }
 }

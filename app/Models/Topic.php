@@ -14,6 +14,14 @@ class Topic extends Model
 	}
 	
 	/*
+	 *一个话题下有多条回复
+	 */
+	public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+	
+	/*
 	 *跟栏目表Category表id也是一一对应的关系 同样使用belongsTo
 	 */
 	 

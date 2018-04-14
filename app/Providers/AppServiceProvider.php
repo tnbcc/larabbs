@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
 	{
 		\App\Models\User::observe(\App\Observers\UserObserver::class);
+		\App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
 		//定制观察器当有新帖子写进自动截取摘要写进topic表
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
 

@@ -41,5 +41,8 @@ Route::get('upload', 'UploadController@index')->name('index');
 //测试百度翻译
 Route::get('baidu/{text}','BaiduController@index');
 
+//发表和删除话题
+Route::resource('replies', 'RepliesController', ['only' => ['store','destroy']]);
+
 
 
