@@ -59,6 +59,6 @@ class Topic extends Model
 	 *生成SEO友好链接
 	 */
 	 public function link($params = []){
-		 return route('topics.show', array_merge([$this->id, $this->slug], $params));
+		 return route('topics.show',array_merge([$this->id, $this->slug], $params));
 	 }
 }
