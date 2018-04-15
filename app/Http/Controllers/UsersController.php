@@ -50,7 +50,7 @@ class UsersController extends Controller
 			    //$key = $result['filename']; 
 			      $res = OSS::upload($key,$pic);
 			if($res){
-				  $data['avatar'] = OSS::getUrl($key);
+				  $data['avatar'] = 'https://larabbs.oss-cn-beijing.aliyuncs.com/'.$key;
 				 
 				//$a = Storage::disk('oss')->putFile('/',$result['path']);
 				//dd($a);

@@ -88,7 +88,7 @@ class TopicsController extends Controller
             $extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
 			$key = \Auth::id() . '_' . time() . '_' . str_random(10) . '.' . $extension;
             $result = OSS::upload($key,$pic);
-			$path = OSS::getUrl($key);
+			$path = 'https://larabbs.oss-cn-beijing.aliyuncs.com/'.$key;
 			// 图片保存成功的话
             if ($result) {
                 $data['file_path'] = $path;
