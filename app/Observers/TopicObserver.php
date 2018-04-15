@@ -30,5 +30,13 @@ class TopicObserver
             dispatch(new TranslateSlug($topic));
         }
     }
+	
+	/*
+	 *话题删除后连带的评论也做删除
+	 */
+	public function deleted(Topic $topic)
+    {
+        \DB::table('replies')->where('topic_id', $topic->id)->delete();
+    }
 		
 }

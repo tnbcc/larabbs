@@ -29,5 +29,13 @@ class ReplyObserver
         $reply->content = clean($reply->content, 'user_topic_body');
     }
 	
+	/*
+	 *删除评论后评论数减一
+	 */
+	public function deleted(Reply $reply)
+    {
+        $reply->topic->decrement('reply_count', 1);
+    }
+	
 	
 }
