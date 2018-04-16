@@ -28,9 +28,9 @@
 
         @include('layouts._footer')
     </div>
-    @if (app()->isLocal())
+    {{-- @if (app()->isLocal())
         @include('sudosu::user-selector')
-    @endif
+    @endif --}}
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 	@yield('scripts')
