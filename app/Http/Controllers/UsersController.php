@@ -37,27 +37,17 @@ class UsersController extends Controller
 	/*
 	 *个人资料更新
 	 */
-	public function update(UserRequest $request,User $user){
-		$data = $request->all();
-		//如果上传了头像
-		if($file = $request->avatar){
-			$pic = $file->getRealPath();
-			//dd($pic);
-			//$result = $uploader->save($file,'avatar',$user->id,362);
-			//$data['avatar'] = $result['path'];
-			$extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
-			$key = $user->id . '_' . time() . '_' . str_random(10) . '.' . $extension;
-			    //$key = $result['filename']; 
-			      $res = OSS::upload($key,$pic);
-			if($res){
-				  $data['avatar'] = 'https://larabbs.oss-cn-beijing.aliyuncs.com/'.$key;
-				 
-				//$a = Storage::disk('oss')->putFile('/',$result['path']);
-				//dd($a);
-				//Storage::move($result['path'],$result['path']);
-			}
-		}
-		$user->update($data);
+	public function update(UserRequest $request,User $user,ImageUploadHandler $uploader){
+		 $data = $request->all();
+
+        if ($request->avatar) {
+            $result = $uploader->save($request->avatar, 'avatars', $user->id);
+            if ($result) {
+                $data['avatar'] = $result['path'];
+            }
+        }
+
+        $user->update($data);
         return redirect()->route('users.show', $user->id)->with('success', '个人资料更新成功！');
 	}
 	
