@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
 		\App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
 		//定制观察器当有新帖子写进自动截取摘要写进topic表
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
+		\App\Models\Link::observe(\App\Observers\LinkObserver::class);
 
         //将时间戳设置为中文
 		\Carbon\Carbon::setLocale('zh');
