@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'PagesController@root')->name('root');
+Route::get('/', 'TopicsController@index')->name('root');
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -48,6 +48,21 @@ Route::resource('replies', 'RepliesController', ['only' => ['store','destroy']])
 Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
 
 Route::get('permission-denied', 'PagesController@permissionDenied')->name('permission-denied');
+
+//测试cookie
+Route::get('cookie','Admin\CookieController@index')->name('index');
+
+//秒杀测试
+Route::group(['prefix' => 'orders'], function ()
+{
+//    Route::get('/', 'OrderController@index');
+    Route::get('/spike', 'OrderController@spike');
+    Route::get('/spike/run', 'OrderController@run');
+//    Route::post('/store', 'OrderController@store');
+//    Route::put('/{id}/update', 'OrderController@update');
+//    Route::patch('/{id}/patch', 'OrderController@patch');
+//    Route::delete('/{id}/destroy', 'OrderController@destroy');
+});
 
 
 
