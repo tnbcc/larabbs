@@ -23,7 +23,7 @@ class TopicsController extends Controller
 
 	 public function index(Request $request, Topic $topic, User $user,Link $link)
     {
-        $topics = $topic->withOrder($request->order)->paginate(20);
+        $topics = $topic->withOrder($request->order)->paginate(10);
         $active_users = $user->getActiveUsers();
 		$links = $link->getAllCached();
         //dd($active_users);
@@ -45,6 +45,8 @@ class TopicsController extends Controller
 		return view('topics.create_and_edit', compact('topic','categories'));
 	}
 
+	
+	
 	public function store(TopicRequest $request,Topic $topic)
 	{  
 		//自动将提交过来的表单转换成数组
@@ -56,7 +58,6 @@ class TopicsController extends Controller
 
 	public function edit(Topic $topic)
 	{
-        $this->authorize('update', $topic);
 		//所有分类
 		$categories = Category::all();
         return view('topics.create_and_edit', compact('topic', 'categories'));
@@ -78,6 +79,21 @@ class TopicsController extends Controller
 		return redirect()->route('topics.index')->with('success', '删除话题成功！');
 	}
 	
+	 /**
+     * @api {post} uploadImage 话题图片上传至阿里云OSS[uploadImage]
+     * @apiVersion 2.0.0
+     * @apiName uploadImage
+     * @apiGroup upload
+     * @apiSampleRequest upload_image
+     *
+     * @apiParam {date} Request 图片上传file信息
+     *   
+     *
+     * 
+     * @apiSuccess {Array} data  返回数据内容.
+	 * 
+     *   
+     */
 	 public function uploadImage(Request $request)
     {
 		 // 初始化返回数据，默认是失败的

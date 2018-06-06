@@ -51,7 +51,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-			'captcha' => 'required|captcha',
+			'captcha' => 'required',
         ],[
 		    'captcha.required' => '验证码不能为空',
             'captcha.captcha' => '请输入正确的验证码',
@@ -66,8 +66,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        //dd($data['captcha']);
+		
+		return User::create([
+            'name' => strip_tags($data['name']),
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

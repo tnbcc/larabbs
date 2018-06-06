@@ -29,5 +29,12 @@ return [
             'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty'   => true,
         ],
+		'test' => [
+		    'HTML.Doctype'             => 'XHTML 1.0 Transitional',
+            'HTML.Allowed'             => 'div',
+            'CSS.AllowedProperties'    => 'font',
+            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.RemoveEmpty'   => true,
+		],
     ],
 ];

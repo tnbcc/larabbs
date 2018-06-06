@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use App\Handlers\ImageUploadHandler;
 use App\Services\OSS;
+use Auth;
 
 class UsersController extends Controller
 {
@@ -27,12 +28,16 @@ class UsersController extends Controller
 	 *个人资料编辑展示页
 	 */
 	public function edit(User $user){
-		if(\Auth::user()->can('update',$user)){
-		return view('users.edit',compact('user')); 
-		}else{
-			return redirect()->route('users.edit', $user->id)->with('danger', '无权编辑别人的信息！');
-		}
-	}
+	
+	if(Auth::user()->can('update',$user)){
+		return view('users.edit',compact('user'));
+	}else{
+		return redirect()->route('users.show',$user->id)->with('danger','您无权编辑别人的个人信息~');
+	}	
+    
+
+     
+}
 	
 	/*
 	 *个人资料更新

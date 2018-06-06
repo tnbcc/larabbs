@@ -9,15 +9,15 @@ use App\Notifications\TopicReplied;
 
 class ReplyObserver
 {
-    
+
 	/*
 	 *回复数+1
 	 */
 	public function created(Reply $reply)
-    {   
+    {
 	    $topic = $reply->topic;
         $reply->topic->increment('reply_count', 1);
-		
+
 		//通知作者话题被回复了
 		$topic->user->notify(new TopicReplied($reply));
     }
@@ -28,7 +28,7 @@ class ReplyObserver
     {
         $reply->content = clean($reply->content, 'user_topic_body');
     }
-	
+
 	/*
 	 *删除评论后评论数减一
 	 */
@@ -36,6 +36,6 @@ class ReplyObserver
     {
         $reply->topic->decrement('reply_count', 1);
     }
-	
-	
+
+
 }

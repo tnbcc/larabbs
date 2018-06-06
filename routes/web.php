@@ -64,5 +64,19 @@ Route::group(['prefix' => 'orders'], function ()
 //    Route::delete('/{id}/destroy', 'OrderController@destroy');
 });
 
+//student
+
+Route::namespace('Admin')->group(function () {
+    Route::group(['prefix' => 'student'],function(){
+		 Route::get('index','StudentController@index');
+		 Route::post('store','StudentController@store')->name('add');
+		 Route::get('show','StudentController@show')->name('show');
+	});
+});
+
+Route::group(['prefix' => 'swagger'], function () {
+    Route::get('json', 'SwaggerController@getJSON');
+    Route::get('my-data', 'SwaggerController@getMyData');
+});
 
 
